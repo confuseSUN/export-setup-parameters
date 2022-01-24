@@ -21,10 +21,10 @@ default = ["std", "parallel"]
 std = ["ark-bls12-381/std"]
 parallel = ["std", "rayon", "ark-std/parallel"]
 
-[patch.crates-io]
-ark-ec = { git = "https://github.com/findora-crypto-lead/algebra" }
-ark-ff = { git = "https://github.com/findora-crypto-lead/algebra" }
-ark-serialize = { git = "https://github.com/findora-crypto-lead/algebra" }
-ark-std = { git = "https://github.com/findora-crypto-lead/std" }
-ark-bls12-381 = { git = "https://github.com/findora-crypto-lead/curves" }
+# [patch.crates-io]
+# ark-ec = { git = "https://github.com/findoranetwork/ark-algebra" }
+# ark-ff = { git = "https://github.com/findoranetwork/ark-algebra" }
+# ark-serialize = { git = "https://github.com/findoranetwork/ark-algebra" }
+# ark-std = { git = "https://github.com/findoranetwork/ark-std" }
+# ark-bls12-381 = { git = "https://github.com/findoranetwork/ark-curves" }
 

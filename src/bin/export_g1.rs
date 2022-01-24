@@ -1,10 +1,10 @@
-use ark_bls12_381::{G1Affine, Fq};
+use ark_bls12_381::{Fq, G1Affine};
 use ark_ec::AffineCurve;
 use ark_serialize::CanonicalSerialize;
 use num_bigint::BigUint;
 use std::{
     fs::File,
-    io::{BufReader, BufRead, Write, Cursor}
+    io::{BufRead, BufReader, Cursor, Write},
 };
 use text_io::scan;
 
@@ -37,8 +37,8 @@ fn main() {
         let x = BigUint::parse_bytes(&x_str.as_bytes()[2..], 16).unwrap();
         let y = BigUint::parse_bytes(&y_str.as_bytes()[2..], 16).unwrap();
 
-        let x_field_elem: Fq = x.clone().into();
-        let y_field_elem: Fq = y.clone().into();
+        let x_field_elem: Fq = x.into();
+        let y_field_elem: Fq = y.into();
 
         g1.push(G1Affine::new(x_field_elem, y_field_elem, false));
         counter = counter + 1;
@@ -50,19 +50,21 @@ fn main() {
     }
 
     let idx: Vec<_> = (10..=21).step_by(1).collect();
- 
-    let _: Vec<_> = ark_std::cfg_into_iter!(idx).
-        map(|i| {
+
+    let _: Vec<_> = ark_std::cfg_into_iter!(idx)
+        .map(|i| {
             let size = 1 << i;
 
             let mut file_out = File::create(format!("g1_2_{}_plus_3.dat", i)).unwrap();
 
-            let mut serialized = vec![0u8; G1Affine::prime_subgroup_generator().uncompressed_size()];
+            let mut serialized =
+                vec![0u8; G1Affine::prime_subgroup_generator().uncompressed_size()];
 
             for elem in g1.iter().take(size + 3) {
                 let mut cursor = Cursor::new(&mut serialized[..]);
                 elem.serialize_uncompressed(&mut cursor).unwrap();
                 file_out.write_all(&serialized[..]).unwrap();
             }
-        }).collect();
+        })
+        .collect();
 }

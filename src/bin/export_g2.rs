@@ -1,10 +1,10 @@
-use ark_bls12_381::{G2Affine, Fq, Fq2};
+use ark_bls12_381::{Fq, Fq2, G2Affine};
 use ark_ec::AffineCurve;
 use ark_serialize::CanonicalSerialize;
 use num_bigint::BigUint;
 use std::{
     fs::File,
-    io::{BufReader, BufRead, Cursor, Write}
+    io::{BufRead, BufReader, Cursor, Write},
 };
 use text_io::scan;
 
@@ -40,11 +40,11 @@ fn main() {
         let y_c0 = BigUint::parse_bytes(&y_c0_str.as_bytes()[2..], 16).unwrap();
         let y_c1 = BigUint::parse_bytes(&y_c1_str.as_bytes()[2..], 16).unwrap();
 
-        let x_c0_field_elem: Fq = x_c0.clone().into();
-        let x_c1_field_elem: Fq = x_c1.clone().into();
+        let x_c0_field_elem: Fq = x_c0.into();
+        let x_c1_field_elem: Fq = x_c1.into();
 
-        let y_c0_field_elem: Fq = y_c0.clone().into();
-        let y_c1_field_elem: Fq = y_c1.clone().into();
+        let y_c0_field_elem: Fq = y_c0.into();
+        let y_c1_field_elem: Fq = y_c1.into();
 
         let x_field_elem = Fq2::new(x_c0_field_elem, x_c1_field_elem);
         let y_field_elem = Fq2::new(y_c0_field_elem, y_c1_field_elem);
@@ -52,7 +52,7 @@ fn main() {
         let elem = G2Affine::new(x_field_elem, y_field_elem, false);
         assert!(elem.is_on_curve());
         g2.push(elem);
-        
+
         line.clear();
     }
 
