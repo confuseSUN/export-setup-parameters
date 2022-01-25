@@ -6,25 +6,30 @@ edition = "2018"
 description = "Export Zcash setup parameters"
 
 [dependencies]
-ark-bls12-381 = "^0.3.0"
-ark-ec = "^0.3.0"
-ark-ff = "^0.3.0"
-ark-std = "^0.3.0"
-ark-serialize = "^0.3.0"
-num-bigint = "0.4.3"
+ark-bls12-381 = { version = "^0.3.0", default-features = false, features = ["curve"] }
+ark-ec = { version = "^0.3.0", default-features = false }
+ark-ff = { version = "^0.3.0", default-features = false, features = [ "asm" ]  }
+ark-std = { version = "^0.3.0", default-features = false }
+ark-serialize = { version = "^0.3.0", default-features = false }
+
+num-bigint = "0.3"
 text_io = "0.1.9"
-rand = "0.7.0"
+rand = "0.7"
 rayon = { version = "1", optional = true }
+
+bincode = "1.3"
+serde = { version = "1.0", features = ["derive"] }
+algebra = { git = "https://github.com/findoranetwork/zei", branch = "develop" }
 
 [features]
 default = ["std", "parallel"]
-std = ["ark-bls12-381/std"]
-parallel = ["std", "rayon", "ark-std/parallel"]
+std = []
+parallel = ["ark-ec/parallel", "ark-ff/parallel", "rayon"]
 
-# [patch.crates-io]
-# ark-ec = { git = "https://github.com/findoranetwork/ark-algebra" }
-# ark-ff = { git = "https://github.com/findoranetwork/ark-algebra" }
-# ark-serialize = { git = "https://github.com/findoranetwork/ark-algebra" }
-# ark-std = { git = "https://github.com/findoranetwork/ark-std" }
-# ark-bls12-381 = { git = "https://github.com/findoranetwork/ark-curves" }
-
+[patch.crates-io]
+ark-ec = { git = "https://github.com/FindoraNetwork/ark-algebra" }
+ark-ff = { git = "https://github.com/FindoraNetwork/ark-algebra" }
+ark-serialize = { git = "https://github.com/FindoraNetwork/ark-algebra" }
+ark-std = { git = "https://github.com/FindoraNetwork/ark-std" }
+ark-bls12-381 = { git = "https://github.com/FindoraNetwork/ark-curves" }
+ark-ed-on-bls12-381 = { git = "https://github.com/FindoraNetwork/ark-curves" }
