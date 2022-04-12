@@ -12,9 +12,9 @@ use text_io::scan;
 #[cfg(feature = "parallel")]
 use rayon::prelude::*;
 
-use algebra::{
+use zei_algebra::{
     bls12_381::{BLSG1, BLSG2},
-    groups::Group,
+    traits::Group,
 };
 
 /// KZG commitment scheme style.
@@ -22,6 +22,25 @@ use algebra::{
 struct KZGCommitmentScheme {
     public_parameter_group_1: Vec<BLSG1>,
     public_parameter_group_2: Vec<BLSG2>,
+}
+
+impl KZGCommitmentScheme {
+    /// serialize the parameters to unchecked bytes.
+    pub fn to_unchecked_bytes(&self) -> Vec<u8> {
+        let mut bytes = vec![];
+        let len_1 = self.public_parameter_group_1.len() as u32;
+        let len_2 = self.public_parameter_group_2.len() as u32;
+        bytes.extend(len_1.to_le_bytes());
+        bytes.extend(len_2.to_le_bytes());
+
+        for i in &self.public_parameter_group_1 {
+            bytes.extend(i.to_unchecked_bytes());
+        }
+        for i in &self.public_parameter_group_2 {
+            bytes.extend(i.to_unchecked_bytes());
+        }
+        bytes
+    }
 }
 
 fn main() {
@@ -144,9 +163,8 @@ fn main() {
 
     // 4. crs serialize to file.
     let mut file_out = File::create(format!("zei_crs_bls12381_2_{}.dat", n)).unwrap();
-    file_out
-        .write_all(&bincode::serialize(&crs).unwrap())
-        .unwrap();
+    let bytes = crs.to_unchecked_bytes();
+    file_out.write_all(&bytes).unwrap();
 
     println!("serialize to file: zei_crs_bls12381_2_{}.dat", n);
 }
