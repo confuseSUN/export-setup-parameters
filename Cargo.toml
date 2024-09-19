@@ -1,38 +1,33 @@
 [package]
 name = "export-setup-parameters"
 version = "0.1.0"
-authors = ["Findora <engineering@findora.org>"]
-edition = "2018"
-description = "Export Zcash setup parameters"
+authors = ["Neo Sun <neosun256@gmail.com>"]
+edition = "2021"
+description = "Export ark setup parameters from zcash"
 
 [dependencies]
-ark-bls12-381 = { version = "^0.3.0", default-features = false, features = ["curve"] }
-ark-ec = { version = "^0.3.0", default-features = false }
-ark-ff = { version = "^0.3.0", default-features = false, features = [ "asm" ]  }
-ark-std = { version = "^0.3.0", default-features = false }
-ark-serialize = { version = "^0.3.0", default-features = false }
+ark-ec = { version = '0.4.0', default-features = false }
+ark-ff = { version = '0.4.0', default-features = false, features = [ "asm" ]  }
+ark-poly = { version = '0.4.0', default-features = false }
+ark-std = { version = '0.4.0', default-features = false }
+ark-serialize = { version = '0.4.0', default-features = false }
 
 num-bigint = "0.4"
 text_io = "0.1.9"
-rand = "0.7"
+rand = "0.8"
 rayon = { version = "1", optional = true }
 
-bincode = "1.3"
+bincode = "1"
 serde = { version = "1.0", features = ["derive"] }
-zei-algebra = { git = "https://github.com/FindoraNetwork/zei", branch = "develop-refactoring" }
+
+[dependencies.ark-bn254]
+package = "ark-bn254-mixed-radix"
+git = "https://github.com/FindoraNetwork/ark-bn254-mixed-radix"
+tag = "v0.4.0"
+default-features = false
+features = ["curve"]
 
 [features]
 default = ["std", "parallel"]
 std = []
 parallel = ["ark-ec/parallel", "ark-ff/parallel", "rayon"]
-
-[patch.crates-io]
-ark-ec = { git = "https://github.com/FindoraNetwork/ark-algebra", branch = "develop-refactoring" }
-ark-ff = { git = "https://github.com/FindoraNetwork/ark-algebra", branch = "develop-refactoring" }
-ark-serialize = { git = "https://github.com/FindoraNetwork/ark-algebra", branch = "develop-refactoring" }
-ark-std = { git = "https://github.com/FindoraNetwork/ark-std", branch = "develop-refactoring" }
-ark-bls12-381 = { git = "https://github.com/FindoraNetwork/ark-curves", branch = "develop-refactoring" }
-ark-ed-on-bls12-381 = { git = "https://github.com/FindoraNetwork/ark-curves", branch = "develop-refactoring" }
-curve25519-dalek = { git = "https://github.com/FindoraNetwork/curve25519-dalek", branch = "develop-refactoring" }
-ed25519-dalek = { git = "https://github.com/FindoraNetwork/ed25519-dalek", branch = "develop-refactoring" }
-x25519-dalek = { git = "https://github.com/FindoraNetwork/x25519-dalek", branch = "develop-refactoring" }

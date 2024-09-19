@@ -1,7 +1,9 @@
 # export-setup-parameters
 This repo contains scripts that export the setup parameters to the arkworks-rs format.
 
-## zei crs size
+- `cargo run --bin export_srs --release 13` generate 2^13
+
+## ark bls12_381 srs size
 
 | n  | size      | file size        |
 | -- | --------- | ---------------- |
@@ -17,3 +19,18 @@ This repo contains scripts that export the setup parameters to the arkworks-rs f
 | 19 | 2^19 + 3  | 29360520 (29M)   |
 | 20 | 2^20 + 3  | 58720648 (57M)   |
 | 21 | 2^21 + 3  | 117440904 (113M) |
+
+## File
+
+https://aztec-ignition.s3.eu-west-2.amazonaws.com/MAIN+IGNITION/sealed/transcript00.dat
+https://aztec-ignition.s3.eu-west-2.amazonaws.com/MAIN+IGNITION/sealed/transcript01.dat
+...
+
+## Step
+```
+cargo run --bin import_g1 --release
+cargo run --bin import_g2 --release (can skip)
+cargo run --bin import_srs --release
+cargo run --bin import_lagrange --release
+cargo run --bin export_srs_padding --release
+```
